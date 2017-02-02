@@ -13,6 +13,7 @@ skills:
   - name: aws
     aws_access_key_id: ABCDEF123456789
     aws_secret_access_key: ZYX987654321abc678910
+    region_name: eu-west-1
 ```
 
 ## Usage
@@ -32,7 +33,7 @@ Lists ec2 instances.
 > user: what instances are running?
 >
 > opsdroid:
-  
+
 ```
 +-------------------+-------------------+---------+----------------+--------+
 | Name              | ID                | State   | IP             | Uptime |

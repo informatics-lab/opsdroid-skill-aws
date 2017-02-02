@@ -15,10 +15,13 @@ _LOGGER = logging.getLogger(__name__)
 
 
 async def aws_get_client(service, config):
-    if "aws_access_key_id" in config and "aws_secret_access_key" in config:
+    if "aws_access_key_id" in config and "aws_secret_access_key" in config and "region_name" in config:
         client = boto3.client(service,
                               aws_access_key_id=config["aws_access_key_id"],
-                              aws_secret_access_key=config["aws_secret_access_key"])
+                              aws_secret_access_key=config["aws_secret_access_key"],
+                              region_name=config["region_name"])
+    elif "region_name" in config:
+        client = boto3.client(service, region_name=config["region_name"])
     else:
         client = boto3.client(service)
     return client
