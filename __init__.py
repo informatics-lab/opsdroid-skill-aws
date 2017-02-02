@@ -109,6 +109,9 @@ async def aws_stop_server(opsdroid, config, message):
 @match_crontab("00 08 * * 1-5")
 @match_apiai_action("aws.ec2.devstart")
 async def aws_stop_dev(opsdroid, config, message):
+    if message is None:
+        connector = opsdroid.default_connector
+        message = Message("", None, connector.default_room, connector)
     hellos = [
         "Morning everyone, I'm in work bright and early and ready to get stuff done!",
         "Morning all, let's have a productive day!"
@@ -133,23 +136,26 @@ async def aws_stop_dev(opsdroid, config, message):
 @match_crontab("30 17 * * 1-5")
 @match_apiai_action("aws.ec2.devstop")
 async def aws_stop_dev(opsdroid, config, message):
-   byes = [
+    if message is None:
+        connector = opsdroid.default_connector
+        message = Message("", None, connector.default_room, connector)
+    byes = [
        "Right, I'm done for the day. Shutting down and going home, Bye!",
        "Ok I'm off. Shutting down the dev stacks. See ya!"
-   ]
-   await message.respond(random.choice(byes))
-   client = await aws_get_client('ec2', config)
-   response = client.describe_instances()
-   instances = []
-   for reservation in response["Reservations"]:
-       for instance in reservation["Instances"]:
-           if "Tags" in instance:
-               for tag in instance["Tags"]:
-                   if tag["Key"] == "environment" and tag["Value"] == 'dev':
-                       instances.append(instance["InstanceId"])
-   if len(instances) > 0:
-       await message.respond("Shutting down {} dev instances".format(len(instances)))
-       response = client.stop_instances(InstanceIds=instances)
-       _LOGGER.debug(response)
-   else:
-       await message.respond("I couldn't find any instances to shut down")
+    ]
+    await message.respond(random.choice(byes))
+    client = await aws_get_client('ec2', config)
+    response = client.describe_instances()
+    instances = []
+    for reservation in response["Reservations"]:
+        for instance in reservation["Instances"]:
+            if "Tags" in instance:
+                for tag in instance["Tags"]:
+                if tag["Key"] == "environment" and tag["Value"] == 'dev':
+                    instances.append(instance["InstanceId"])
+    if len(instances) > 0:
+        await message.respond("Shutting down {} dev instances".format(len(instances)))
+        response = client.stop_instances(InstanceIds=instances)
+        _LOGGER.debug(response)
+    else:
+        await message.respond("I couldn't find any instances to shut down")
