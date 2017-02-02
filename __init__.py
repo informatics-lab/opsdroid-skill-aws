@@ -151,8 +151,8 @@ async def aws_stop_dev(opsdroid, config, message):
         for instance in reservation["Instances"]:
             if "Tags" in instance:
                 for tag in instance["Tags"]:
-                if tag["Key"] == "environment" and tag["Value"] == 'dev':
-                    instances.append(instance["InstanceId"])
+                    if tag["Key"] == "environment" and tag["Value"] == 'dev':
+                        instances.append(instance["InstanceId"])
     if len(instances) > 0:
         await message.respond("Shutting down {} dev instances".format(len(instances)))
         response = client.stop_instances(InstanceIds=instances)
