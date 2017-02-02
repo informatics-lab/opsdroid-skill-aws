@@ -1,32 +1,45 @@
-# opsdroid skill hello
+# opsdroid skill aws
 
-A skill for [opsdroid](https://github.com/opsdroid/opsdroid) to respond to hello and goodbye messages.
+A skill for [opsdroid](https://github.com/opsdroid/opsdroid) to interact with AWS.
 
 ## Requirements
 
-None.
+You need an AWS account and the apiai parser configured.
 
 ## Configuration
 
-None.
+```yaml
+skills:
+  - name: aws
+    aws_access_key_id: ABCDEF123456789
+    aws_secret_access_key: ZYX987654321abc678910
+```
 
 ## Usage
 
-#### `hello`
+#### `how many servers are running?`
 
-Says hello to the user.
+Checks how many ec2 instances are running.
 
-> user: hello
+> user: how many servers are running?
 >
-> opsdroid: Hi user
+> opsdroid: There are 26 servers running
 
-#### `goodbye`
+#### `what instances are running?`
 
-Says goodbye to the user.
+Lists ec2 instances.
 
-> user: bye
+> user: what instances are running?
 >
-> opsdroid: Bye user
+> opsdroid:
+  
+```
++-------------------+-------------------+---------+----------------+--------+
+| Name              | ID                | State   | IP             | Uptime |
++-------------------+-------------------+---------+----------------+--------+
+| instancename      | i-23456789        | running | 12.34.56.78    | 3d     |
++-------------------+-------------------+---------+----------------+--------+
+```
 
 ## License
 
