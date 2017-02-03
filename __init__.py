@@ -9,6 +9,7 @@ import botocore
 from prettytable import PrettyTable, MSWORD_FRIENDLY
 
 from opsdroid.matchers import match_apiai_action, match_crontab
+from opsdroid.message import Message
 
 
 _LOGGER = logging.getLogger(__name__)
