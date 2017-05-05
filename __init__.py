@@ -174,9 +174,9 @@ async def get_aws_cost_for_period(api_key, period):
 @match_crontab("00 09 * * *")
 @match_regex("AWS bill yesterday")
 async def aws_billing_daily(opsdroid, config, message):
-    if not config.get("daily-billing-alerts", True):
-        return
     if message is None:
+        if not config.get("monthly-billing-alerts", True):
+            return
         connector = opsdroid.default_connector
         message = Message("", None, connector.default_room, connector)
     api_key = config.get("chapi-key", None)
@@ -189,9 +189,9 @@ async def aws_billing_daily(opsdroid, config, message):
 @match_crontab("00 09 01 * *")
 @match_regex("AWS bill last month")
 async def aws_billing_daily(opsdroid, config, message):
-    if not config.get("monthly-billing-alerts", True):
-        return
     if message is None:
+        if not config.get("monthly-billing-alerts", True):
+            return
         connector = opsdroid.default_connector
         message = Message("", None, connector.default_room, connector)
     api_key = config.get("chapi-key", None)
