@@ -11,6 +11,7 @@ You need an AWS account and the apiai parser configured.
 ```yaml
 skills:
   - name: aws
+    room: "#monitoring"  # (Optional) room to send alert to
     aws_access_key_id: ABCDEF123456789
     aws_secret_access_key: ZYX987654321abc678910
     region_name: eu-west-1

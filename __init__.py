@@ -127,7 +127,7 @@ async def aws_stop_dev(opsdroid, config, message):
         for instance in reservation["Instances"]:
             if "Tags" in instance:
                 for tag in instance["Tags"]:
-                    if tag["Key"] == "environment" and tag["Value"] == 'dev':
+                    if tag["Key"] == "OfficeHours" and tag["Value"].lower() != 'false':
                         instances.append(instance["InstanceId"])
     if len(instances) > 0:
         await message.respond("Starting {} dev instances".format(len(instances)))
@@ -154,7 +154,7 @@ async def aws_stop_dev(opsdroid, config, message):
         for instance in reservation["Instances"]:
             if "Tags" in instance:
                 for tag in instance["Tags"]:
-                    if tag["Key"] == "environment" and tag["Value"] == 'dev':
+                    if tag["Key"] == "OfficeHours" and tag["Value"].lower() != 'false':
                         instances.append(instance["InstanceId"])
     if len(instances) > 0:
         await message.respond("Shutting down {} dev instances".format(len(instances)))
@@ -178,7 +178,8 @@ async def aws_billing_daily(opsdroid, config, message):
         if not config.get("monthly-billing-alerts", True):
             return
         connector = opsdroid.default_connector
-        message = Message("", None, connector.default_room, connector)
+        room = config.get("room", connector.default_room)
+        message = Message("", None, room, connector)
     api_key = config.get("chapi-key", None)
     if api_key is not None:
         cost = await get_aws_cost_for_period(api_key, "daily")
@@ -193,7 +194,8 @@ async def aws_billing_daily(opsdroid, config, message):
         if not config.get("monthly-billing-alerts", True):
             return
         connector = opsdroid.default_connector
-        message = Message("", None, connector.default_room, connector)
+        room = config.get("room", connector.default_room)
+        message = Message("", None, room, connector)
     api_key = config.get("chapi-key", None)
     if api_key is not None:
         cost = await get_aws_cost_for_period(api_key, "monthly")
