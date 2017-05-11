@@ -184,7 +184,7 @@ async def aws_stop_dev(opsdroid, config, message):
         await message.respond("Shutting down {} dev instances".format(len(instances)))
         try:
             client.stop_instances(InstanceIds=instances)
-            client.create_tags(Resources=instances, Tags=[{'StoppedByOfficeHours': 'true'}])
+            client.create_tags(Resources=instances, Tags=[{'Key': 'StoppedByOfficeHours', 'Value': 'true'}])
         except botocore.exceptions.ClientError as e:
              await message.respond("{}".format(e))
     else:
@@ -209,7 +209,7 @@ async def aws_stop_dev(opsdroid, config, message):
         await message.respond("Starting {} dev instances".format(len(instances)))
         try:
             client.start_instances(InstanceIds=instances)
-            client.delete_tags(Resources=instances, Tags=[{'StoppedByOfficeHours': None}])
+            client.delete_tags(Resources=instances, Tags=[{'Key': 'StoppedByOfficeHours'}])
         except botocore.exceptions.ClientError as e:
              await message.respond("{}".format(e))
     else:
