@@ -180,10 +180,11 @@ async def aws_stop_dev(opsdroid, config, message):
     instances = await get_office_hours_instances(client)
     if len(instances) > 0:
         await message.respond("Shutting down {} dev instances".format(len(instances)))
-        response = client.stop_instances(InstanceIds=instances)
-        _LOGGER.debug(response)
-        response = client.create_tags(Resources=instances, Tags=[{'StoppedByOfficeHours': 'true'}])
-        _LOGGER.debug(response)
+        try:
+            client.stop_instances(InstanceIds=instances)
+            client.create_tags(Resources=instances, Tags=[{'StoppedByOfficeHours': 'true'}])
+        except botocore.exceptions.ClientError as e:
+             await message.respond("{}".format(e))
     else:
         await message.respond("I couldn't find any instances to shut down")
 
@@ -204,10 +205,11 @@ async def aws_stop_dev(opsdroid, config, message):
     instances = await get_office_hours_instances(client, only_stopped=True)
     if len(instances) > 0:
         await message.respond("Starting {} dev instances".format(len(instances)))
-        response = client.start_instances(InstanceIds=instances)
-        _LOGGER.debug(response)
-        response = client.delete_tags(Resources=instances, Tags=[{'StoppedByOfficeHours': None}])
-        _LOGGER.debug(response)
+        try:
+            client.start_instances(InstanceIds=instances)
+            client.delete_tags(Resources=instances, Tags=[{'StoppedByOfficeHours': None}])
+        except botocore.exceptions.ClientError as e:
+             await message.respond("{}".format(e))
     else:
         await message.respond("I couldn't find any instances to start")
 
