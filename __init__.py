@@ -37,9 +37,11 @@ async def get_office_hours_instances(client, only_stopped=False):
     for reservation in response["Reservations"]:
         for instance in reservation["Instances"]:
             tags = clean_tags(instance["Tags"]) if "Tags" in instance else {}
-            if "OfficeHours" not in tags or tags["OfficeHours"].lower() != 'false':
-                if only_stopped is False or "StoppedByOfficeHours" in tags:
-                    instances.append(instance["InstanceId"])
+            if "aws:autoscaling:groupName" not in tags\
+                    and ("InstanceLifecycle" not in instance or instance["InstanceLifecycle"] != "spot"):
+                if "OfficeHours" not in tags or tags["OfficeHours"].lower() != 'false':
+                    if only_stopped is False or "StoppedByOfficeHours" in tags:
+                        instances.append(instance["InstanceId"])
     return instances
 
 
