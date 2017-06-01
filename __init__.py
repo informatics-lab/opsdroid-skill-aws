@@ -52,7 +52,7 @@ async def get_aws_cost_for_period(api_key, period):
         async with session.get(url) as resp:
             if resp.status == 200:
                 response = await resp.json()
-                return round(response['data'][-2][0][0], 2)
+                return round(response['data'][-1][0][0], 2)
 
 
 async def aws_get_client(service, config):
