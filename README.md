@@ -15,9 +15,6 @@ skills:
     aws_access_key_id: ABCDEF123456789
     aws_secret_access_key: ZYX987654321abc678910
     region_name: eu-west-1
-    chapi-key: ABCDEF123456789  # Cloud Health API key for billing alerts
-    daily-billing-alerts: true
-    monthly-billing-alerts: true
 ```
 
 ## Usage
@@ -45,14 +42,6 @@ Lists ec2 instances.
 | instancename      | i-23456789        | running | 12.34.56.78    | 3d     |
 +-------------------+-------------------+---------+----------------+--------+
 ```
-
-#### `how much was our AWS bill yesterday?`
-
-Checks how much your AWS bill was yesterday.
-
-> user: how much was our AWS bill yesterday?
->
-> opsdroid: Yesterday we spent £57.89 on AWS.
 
 ## License
 
